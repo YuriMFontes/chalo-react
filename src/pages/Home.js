@@ -1,11 +1,15 @@
-// src/pages/Home.js
+import Carousel from '../components/CarroselComponent'
 import Header from '../components/Header'
 import React from 'react';
 
 const Home = () => {
   return (
-    <Header/>
-    
+    <>
+      <Header />
+      <main>
+        <Carousel/>
+      </main>
+    </>
   );
 };
 
