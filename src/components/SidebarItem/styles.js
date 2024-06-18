@@ -6,10 +6,10 @@ export const Container = styled.div`
   background-color: white; 
   font-size: 20px;
   color: #fd729c;
-  padding: 10px;
+  padding: 7px;
   cursor: pointer;
   border-radius: 10px;
-  margin: 0 15px 20px;
+  margin: 0 15px 10px;
   border: 2px solid #fd729c;
 
   > svg {
