@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import Header from './Header';
+import styles from '../styles/Register.css';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -7,9 +10,14 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [confirmpassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
+    const [showPopup, setShowPopup] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        console.log('Dados enviados:', { name, email, password, confirmpassword });
 
         try {
             const response = await axios.post('http://localhost:3000/auth/register', {
@@ -20,61 +28,85 @@ const Register = () => {
             });
 
             setMessage(response.data.msg);
-            // Pode adicionar redirecionamento ou outras lógicas aqui após o registro bem-sucedido
+            setShowPopup(true);
         } catch (error) {
             if (error.response) {
                 setMessage(error.response.data.msg);
             } else {
                 setMessage('Erro ao conectar-se ao servidor.');
             }
+            setShowPopup(true);
         }
     };
 
     return (
-        <div className='register'>
-            <h2>Criar conta</h2>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    id="name"
-                    placeholder="Nome"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                /><br/><br/>
+        <>
+            <Header />
+            <div className='main-container'>
+                <div className='register'>
+                    <h2>Criar conta</h2>
+                    <form onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="Nome"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        /><br /><br />
 
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                /><br/><br/>
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        /><br /><br />
 
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Senha"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                /><br/><br/>
+                        <div className='input-group'>
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                id="password"
+                                placeholder="Senha"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <span onClick={() => setShowPassword(!showPassword)}>
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
+                        <div className='input-group'>
+                            <input
+                                type={showConfirmPassword ? "text" : "password"}
+                                id="confirmpassword"
+                                placeholder="Confirme a Senha"
+                                value={confirmpassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                            />
+                            <span onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
+                        <br /><br />
+                        <button type="submit">Registrar</button>
+                    </form>
+                    <p className='create-register'>
+                       Já possui uma conta?
+                        <a href="/auth"> Entrar</a>
+                    </p>
 
-                <input
-                    type="password"
-                    id="confirmpassword"
-                    placeholder="Confirme a Senha"
-                    value={confirmpassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                /><br/><br/>
-
-                <button type="submit">Registrar</button>
-            </form>
-
-            {message && <p>{message}</p>}
-        </div>
+                    {showPopup && (
+                        <div className="popup">
+                            <p>{message}</p>
+                            <button onClick={() => setShowPopup(false)}>Fechar</button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </>
     );
 };
 

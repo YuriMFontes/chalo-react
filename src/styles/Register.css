@@ -7,7 +7,7 @@
     height: 100%;
 }
 
-.login {
+.register {
     background-color: white;
     padding: 40px;
     border-radius: 15px;
@@ -15,12 +15,12 @@
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.login h2 {
+.register h2 {
     text-align: center;
     margin-bottom: 50px;
 }
 
-.login input {
+.register input {
     width: calc(100% - 20px); 
     height: 40px;
     border-radius: 10px;
@@ -29,41 +29,42 @@
     border: 1.5px solid black;
 }
 
-.login input:hover{
+.register input:hover{
     border: 1.5px solid #fd729c;
 }
 
-.login input:focus{
+.register input:focus{
     color: #fd729c;
     border: 1.5px solid #fd729c;
     outline: none;
 }
 
 
-.login button {
+.register button {
     width: 100%; 
     padding: 15px;
     background-color: #fd729c;
     border: none;
     border-radius: 10px;
+    margin-top: 5px;
     cursor: pointer;
     color: white; 
     font-size: 16px;
     border: 1px solid #fd729c; 
 }
 
-.login button:hover{
+.register button:hover{
     color: #fd729c;
     border: 1px solid #fd729c;
     background-color: transparent;
 }
 
-.login a{
+.register a{
     color: #fd729c;
     text-decoration: none;
 }
 
-.login a:hover{
+.register a:hover{
     color: black;
 }
 

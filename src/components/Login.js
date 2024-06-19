@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../styles/Login.css'; 
+import Header from '../components/Header'
 
 
 const Login = () => {
@@ -40,6 +41,8 @@ const Login = () => {
     };
 
     return (
+        <>
+        <Header/>
         <div className='main-container'>
             <div className='login'>
                 <h2>Entrar</h2>
@@ -54,7 +57,6 @@ const Login = () => {
                             required
                         />
                     </div>
-                    <br /><br />
                     <div className='input-group'>
                         <input
                             type={showPassword ? "text" : "password"}
@@ -77,7 +79,7 @@ const Login = () => {
                 </form>
                 <p className='create-register'>
                     Não tem uma conta ainda?
-                    <a href="/auth/register"> Criar conta</a>
+                    <a href="/auth/regis"> Criar conta</a>
                 </p>
 
                 {showPopup && (
@@ -88,6 +90,7 @@ const Login = () => {
                 )}
             </div>
         </div>
+        </>
     );
 };
 
