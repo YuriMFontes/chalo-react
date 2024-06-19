@@ -1,11 +1,16 @@
+
 /* imports */
 require("dotenv").config()
 const express = require('express')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const cors = require('cors');
 
 const app = express()
+
+app.use(cors());
+
 
 // Config JSON
 app.use(express.json())
@@ -143,7 +148,7 @@ app.post("/auth/login", async (req, res) => {
 
     res.status(200).json({msg: "Autenticação realizada com sucesso!", token})
 
-    }catch(err) {
+    }catch(error) {
         console.log(error)
         res.status(500).json({msg: 'Aconteceu um erro no servidor, tente novamento mais tarde!'
 

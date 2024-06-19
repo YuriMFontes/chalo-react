@@ -1,14 +1,14 @@
-import Carousel from '../components/CarroselComponent'
 import Header from '../components/Header'
 import React from 'react';
+import Login from '../components/Login'
+import Register from '../components/Register';
 
 const Home = () => {
   return (
     <>
       <Header />
-      <main>
-        <Carousel/>
-      </main>
+      <Login/>
+      <Register/>
     </>
   );
 };
