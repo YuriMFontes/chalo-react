@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import '../styles/Login.css'; 
+
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -17,6 +22,7 @@ const Login = () => {
 
             const { msg, token } = response.data;
             setMessage(msg);
+            setShowPopup(true);
 
             // Salvar o token em localStorage
             localStorage.setItem('token', token);
@@ -29,35 +35,58 @@ const Login = () => {
             } else {
                 setMessage('Erro ao conectar-se ao servidor.');
             }
+            setShowPopup(true);
         }
     };
 
     return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="email">Email:</label>
-                <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                /><br/><br/>
+        <div className='main-container'>
+            <div className='login'>
+                <h2>Entrar</h2>
+                <form onSubmit={handleSubmit}>
+                    <div className='input-group'>
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <br /><br />
+                    <div className='input-group'>
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            id="password"
+                            placeholder="Senha"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        <span onClick={() => setShowPassword(!showPassword)}>
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </span>
+                    </div>
 
-                <label htmlFor="password">Senha:</label>
-                <input
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                /><br/><br/>
+                    <p>
+                        <a href="/forgot-password">Esqueceu a senha?</a>
+                    </p>
+                    <br /><br />
+                    <button type="submit">Entrar</button>
+                </form>
+                <p className='create-register'>
+                    Não tem uma conta ainda?
+                    <a href="/auth/register"> Criar conta</a>
+                </p>
 
-                <button type="submit">Entrar</button>
-            </form>
-
-            {message && <p>{message}</p>}
+                {showPopup && (
+                    <div className="popup">
+                        <p>{message}</p>
+                        <button onClick={() => setShowPopup(false)}>Fechar</button>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

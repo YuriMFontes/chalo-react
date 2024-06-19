@@ -31,40 +31,40 @@ const Register = () => {
     };
 
     return (
-        <div>
-            <h2>Registro</h2>
+        <div className='register'>
+            <h2>Criar conta</h2>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="name">Nome:</label>
                 <input
                     type="text"
                     id="name"
+                    placeholder="Nome"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
                 /><br/><br/>
 
-                <label htmlFor="email">Email:</label>
                 <input
                     type="email"
                     id="email"
+                    placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                 /><br/><br/>
 
-                <label htmlFor="password">Senha:</label>
                 <input
                     type="password"
                     id="password"
+                    placeholder="Senha"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 /><br/><br/>
 
-                <label htmlFor="confirmpassword">Confirme a Senha:</label>
                 <input
                     type="password"
                     id="confirmpassword"
+                    placeholder="Confirme a Senha"
                     value={confirmpassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required

@@ -1,0 +1,122 @@
+body {
+    background-image: url(../assets/background.jpg);
+    margin: 0;
+    height: 100vh;
+}
+
+.main-container {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.login {
+    background-color: white;
+    padding: 40px;
+    border-radius: 15px;
+    width: 500px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login h2 {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.login input {
+    width: calc(100% - 20px); 
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    padding-left: 10px;
+    border: 1.5px solid black;
+}
+
+.login input:hover{
+    border: 1.5px solid #fd729c;
+}
+
+.login input:focus{
+    color: #fd729c;
+    border: 1.5px solid #fd729c;
+    outline: none;
+}
+
+
+.login button {
+    width: 100%; 
+    padding: 15px;
+    background-color: #fd729c;
+    border: none;
+    border-radius: 10px;
+    margin-top: 5px;
+    cursor: pointer;
+    color: white; 
+    font-size: 16px;
+    border: 1px solid #fd729c; 
+}
+
+.login button:hover{
+    color: #fd729c;
+    border: 1px solid #fd729c;
+    background-color: transparent;
+}
+
+.login a{
+    color: #fd729c;
+    text-decoration: none;
+}
+
+.login a:hover{
+    color: black;
+}
+
+.create-register{
+    margin-top: 25px;
+}
+
+.input-group {
+    position: relative;
+}
+
+.input-group span {
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+}
+
+.popup p {
+    margin-bottom: 20px;
+}
+
+.popup button {
+    padding: 10px 20px;
+    background-color: #fd729c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #fd729c;
+}
+
+.popup button:hover {
+    background-color: transparent;
+    border: 1px solid #fd729c;
+}
+
