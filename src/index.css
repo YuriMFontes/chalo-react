@@ -6,3 +6,17 @@
   user-select: none; 
 }
 
+body {
+  background-image: url(./assets/background.jpg);
+  margin: 0;
+  height: 100vh;
+}
+
+@media (max-width: 990px) {
+  body{
+    background-image: url(./assets/background990px.jpg);
+  }
+
+  
+  
+}
