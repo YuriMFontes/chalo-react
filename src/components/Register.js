@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import Header from './Header';
-import styles from '../styles/Register.css';
+import '../styles/Register.css';
 
 const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmpassword, setConfirmPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
     const [showPopup, setShowPopup] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -17,14 +17,14 @@ const Register = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        console.log('Dados enviados:', { name, email, password, confirmpassword });
+       
 
         try {
             const response = await axios.post('http://localhost:3000/auth/register', {
                 name,
                 email,
                 password,
-                confirmpassword
+                confirmPassword
             });
 
             setMessage(response.data.msg);
@@ -80,9 +80,9 @@ const Register = () => {
                         <div className='input-group'>
                             <input
                                 type={showConfirmPassword ? "text" : "password"}
-                                id="confirmpassword"
+                                id="confirmPassword"
                                 placeholder="Confirme a Senha"
-                                value={confirmpassword}
+                                value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 required
                             />
@@ -94,7 +94,7 @@ const Register = () => {
                         <button type="submit">Registrar</button>
                     </form>
                     <p className='create-register'>
-                       Já possui uma conta?
+                        Já possui uma conta?
                         <a href="/auth"> Entrar</a>
                     </p>
 
