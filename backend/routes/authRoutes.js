@@ -4,6 +4,7 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const { sendPasswordResetEmail } = require('../utils/emailService');
 
 // Registrar usuário
 router.post('/register', async (req, res) => {
@@ -35,7 +36,7 @@ router.post('/register', async (req, res) => {
 
         await newUser.save();
 
-        res.status(201).json({ msg: 'Usuário criado com sucesso!' });
+        res.status(201).json({ msg: 'Bem-vinda, sua conta foi criada com sucesso!' });
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ msg: 'Erro ao registrar usuário.' });
@@ -54,7 +55,7 @@ router.post('/login', async (req, res) => {
         const user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(404).json({ msg: 'Usuário não encontrado!' });
+            return res.status(404).json({ msg: 'E-mail não cadastrado!' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
@@ -80,7 +81,7 @@ router.post('/forgot_password', async (req, res) => {
         const user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(404).json({ msg: 'Usuário não encontrado!' });
+            return res.status(404).json({ msg: 'E-mail não encontrado!' });
         }
 
         const token = crypto.randomBytes(20).toString('hex');
@@ -94,7 +95,9 @@ router.post('/forgot_password', async (req, res) => {
             }
         });
 
-        res.status(200).json({ msg: 'Token de redefinição de senha gerado com sucesso!', token });
+        sendPasswordResetEmail(email, token);
+
+        res.status(200).json({ msg: 'Token de redefinição de senha gerado com sucesso!' });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ msg: 'Erro ao gerar token de redefinição de senha.' });

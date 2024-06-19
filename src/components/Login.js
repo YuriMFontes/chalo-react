@@ -40,6 +40,26 @@ const Login = () => {
         }
     };
 
+    const handleForgotPassword = async (event) => {
+        event.preventDefault();
+
+        try {
+            const response = await axios.post('http://localhost:3000/auth/forgot_password', {
+                email
+            });
+
+            setMessage(response.data.msg);
+            setShowPopup(true);
+        } catch (error) {
+            if (error.response) {
+                setMessage(error.response.data.msg);
+            } else {
+                setMessage('Erro ao conectar-se ao servidor.');
+            }
+            setShowPopup(true);
+        }
+    };
+
     return (
         <>
         <Header/>
@@ -72,7 +92,7 @@ const Login = () => {
                     </div>
 
                     <p>
-                        <a href="/forgot-password">Esqueceu a senha?</a>
+                    <a href="#" onClick={handleForgotPassword}>Esqueceu a senha?</a>
                     </p>
                     <br /><br />
                     <button type="submit">Entrar</button>

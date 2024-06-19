@@ -91,7 +91,7 @@ const Register = () => {
                             </span>
                         </div>
                         <br /><br />
-                        <button type="submit">Registrar</button>
+                        <button type="submit">Criar</button>
                     </form>
                     <p className='create-register'>
                         Já possui uma conta?
