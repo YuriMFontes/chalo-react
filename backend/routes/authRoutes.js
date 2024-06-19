@@ -97,7 +97,7 @@ router.post('/forgot_password', async (req, res) => {
 
         sendPasswordResetEmail(email, token);
 
-        res.status(200).json({ msg: 'Token de redefinição de senha gerado com sucesso!' });
+        res.status(200).json({ msg: 'E-mail enviado para redefinição de senha!' });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ msg: 'Erro ao gerar token de redefinição de senha.' });
