@@ -2,28 +2,27 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const checkToken = require('../middleware/checkToken');
+const UserController = require('../controllers/UserController');
 
 // Rota inicial pública
 router.get('/', (req, res) => {
     res.status(200).json({ msg: 'Bem vindo a nossa API!' });
 });
 
-// Rota privada para obter usuário por ID
-router.get('/user/:id', checkToken, async (req, res) => {
-    const id = req.params.id;
+// Rota para registrar um novo usuário
+router.post('/auth/register', UserController.registrarUsuario);
 
-    try {
-        const user = await User.findById(id, '-password');
+// Rota para login de usuário
+router.post('/auth/login', UserController.loginUsuario);
 
-        if (!user) {
-            return res.status(404).json({ msg: 'Usuário não encontrado!' });
-        }
+// Rota para solicitar redefinição de senha
+router.post('/auth/forgot_password', UserController.esqueceuSenha);
 
-        res.status(200).json({ user });
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).json({ msg: 'Erro ao buscar usuário.' });
-    }
-});
+// Rota para redefinir senha
+router.post('/auth/reset_password', UserController.resetarSenha);
+
+// Rota para listar usuario
+router.get('/user/:user_id', UserController.listarUsuario);
+
 
 module.exports = router;

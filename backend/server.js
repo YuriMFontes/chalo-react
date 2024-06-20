@@ -12,7 +12,7 @@ const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASS;
 
 mongoose.connect(
-    `mongodb+srv://${dbUser}:${dbPassword}@chalo.wr4ccdj.mongodb.net/?retryWrites=true&w=majority&appName=Chalo`
+    `mongodb+srv://${dbUser}:${dbPassword}@chalo.wr4ccdj.mongodb.net/Usuarios?retryWrites=true&w=majority&appName=Chalo`
 )
     .then(() => {
         app.listen(3000, () => {
@@ -26,7 +26,5 @@ mongoose.connect(
 
 // Importando e usando as rotas
 const indexRoutes = require('./routes/index');
-const authRoutes = require('./routes/authRoutes');
 
 app.use('/', indexRoutes);
-app.use('/auth', authRoutes);

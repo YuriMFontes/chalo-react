@@ -1,13 +1,11 @@
-const express = require('express');
-const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const { sendPasswordResetEmail } = require('../utils/emailService');
 
-// Registrar usuário
-router.post('/register', async (req, res) => {
+// Função para registrar um novo usuário
+exports.registrarUsuario = async (req, res) => {
     const { name, email, password, confirmPassword } = req.body;
 
     if (!name || !email || !password) {
@@ -19,32 +17,32 @@ router.post('/register', async (req, res) => {
     }
 
     try {
-        const userExists = await User.findOne({ email });
+        const usuarioExistente = await User.findOne({ email });
 
-        if (userExists) {
+        if (usuarioExistente) {
             return res.status(422).json({ msg: 'E-mail já cadastrado!' });
         }
 
         const salt = await bcrypt.genSalt(12);
         const passwordHash = await bcrypt.hash(password, salt);
 
-        const newUser = new User({
+        const novoUsuario = new User({
             name,
             email,
             password: passwordHash,
         });
 
-        await newUser.save();
+        await novoUsuario.save();
 
-        res.status(201).json({ msg: 'Bem-vinda, sua conta foi criada com sucesso!' });
+        res.status(201).json({ msg: 'Bem-vindo, sua conta foi criada com sucesso!', novoUsuario });
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ msg: 'Erro ao registrar usuário.' });
     }
-});
+};
 
 // Login de usuário
-router.post('/login', async (req, res) => {
+exports.loginUsuario = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -52,46 +50,46 @@ router.post('/login', async (req, res) => {
     }
 
     try {
-        const user = await User.findOne({ email });
+        const usuario = await User.findOne({ email });
 
-        if (!user) {
+        if (!usuario) {
             return res.status(404).json({ msg: 'E-mail não cadastrado!' });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        const senhaCorreta = await bcrypt.compare(password, usuario.password);
 
-        if (!isMatch) {
+        if (!senhaCorreta) {
             return res.status(422).json({ msg: 'Senha inválida!' });
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.SECRET);
+        const token = jwt.sign({ id: usuario._id }, process.env.SECRET);
 
         res.status(200).json({ msg: 'Autenticação realizada com sucesso!', token });
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ msg: 'Erro ao realizar login.' });
     }
-});
+};
 
 // Esqueceu a senha
-router.post('/forgot_password', async (req, res) => {
+exports.esqueceuSenha = async (req, res) => {
     const { email } = req.body;
 
     try {
-        const user = await User.findOne({ email });
+        const usuario = await User.findOne({ email });
 
-        if (!user) {
+        if (!usuario) {
             return res.status(404).json({ msg: 'E-mail não encontrado!' });
         }
 
         const token = crypto.randomBytes(20).toString('hex');
-        const now = new Date();
-        now.setHours(now.getHours() + 1);
+        const agora = new Date();
+        agora.setHours(agora.getHours() + 1);
 
-        await User.findByIdAndUpdate(user._id, {
+        await User.findByIdAndUpdate(usuario._id, {
             $set: {
                 passwordResetToken: token,
-                passwordResetExpires: now,
+                passwordResetExpires: agora,
             }
         });
 
@@ -102,37 +100,38 @@ router.post('/forgot_password', async (req, res) => {
         console.error(err.message);
         res.status(500).json({ msg: 'Erro ao gerar token de redefinição de senha.' });
     }
-});
+};
 
-router.post('/reset_password', async (req, res) => {
+// Resetar senha
+exports.resetarSenha = async (req, res) => {
     const { email, token, password } = req.body;
 
     try {
-        const user = await User.findOne({ email })
+        const usuario = await User.findOne({ email })
             .select('+passwordResetToken passwordResetExpires');
 
-        if (!user) {
+        if (!usuario) {
             return res.status(404).json({ msg: 'Usuário não encontrado!' });
         }
 
-        if (token !== user.passwordResetToken) {
+        if (token !== usuario.passwordResetToken) {
             return res.status(400).json({ error: 'Token inválido!' });
         }
 
-        const now = new Date();
+        const agora = new Date();
 
-        if (now > user.passwordResetExpires) {
+        if (agora > usuario.passwordResetExpires) {
             return res.status(400).json({ error: 'Token expirado! Gere um novo token.' });
         }
 
         const salt = await bcrypt.genSalt(12);
         const passwordHash = await bcrypt.hash(password, salt);
 
-        user.password = passwordHash;
-        user.passwordResetToken = undefined;
-        user.passwordResetExpires = undefined;
+        usuario.password = passwordHash;
+        usuario.passwordResetToken = undefined;
+        usuario.passwordResetExpires = undefined;
 
-        await user.save();
+        await usuario.save();
 
         res.status(200).json({ msg: 'Senha redefinida com sucesso!' });
 
@@ -140,6 +139,22 @@ router.post('/reset_password', async (req, res) => {
         console.error(err.message);
         res.status(500).json({ error: 'Erro ao redefinir a senha.' });
     }
-});
+};
 
-module.exports = router;
+// Função para o usuário
+exports.listarUsuario = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const user = await User.findById(id, '-password');
+
+        if (!user) {
+            return res.status(404).json({ msg: 'Usuário não encontrado!' });
+        }
+
+        res.status(200).json({ user });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ msg: 'Erro ao buscar usuário.' });
+    }
+};
